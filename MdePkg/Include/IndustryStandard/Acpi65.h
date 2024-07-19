@@ -341,6 +341,10 @@ typedef struct {
 #define EFI_ACPI_6_5_MSI_PIC                        0x15
 #define EFI_ACPI_6_5_BIO_PIC                        0x16
 #define EFI_ACPI_6_5_LPC_PIC                        0x17
+#define EFI_ACPI_6_5_RINTC                          0x18
+#define EFI_ACPI_6_5_IMSIC                          0x19
+#define EFI_ACPI_6_5_APLIC                          0x1A
+#define EFI_ACPI_6_5_PLIC                           0x1B
 
 //
 // APIC Structure Definitions
@@ -722,6 +726,45 @@ typedef struct {
   UINT16    Size;
   UINT8     Cascade;
 } EFI_ACPI_6_5_LPC_PIC_STRUCTURE;
+
+///
+/// RISC-V Interrupt Controller
+///   https://drive.google.com/file/d/1R6k4MshhN3WTT-hwqAquu5nX6xSEqK2l/view
+///   https://drive.google.com/file/d/1oMGPyOD58JaPgMl1pKasT-VKsIKia7zR/view
+///
+typedef struct {
+  UINT8     Type;
+  UINT8     Length;
+  UINT8     Version;
+  UINT8     Reserved;
+  UINT32    Flags;
+  UINT64    HartId;
+  UINT32    ProcessorUid;
+  UINT32    ExternalINTCId;
+  UINT64    IMSICBase;
+  UINT32    IMSICSize;
+} EFI_ACPI_6_5_RINTC_STRUCTURE;
+
+#define EFI_ACPI_6_5_RINTC_FLAGS_ENABLED          0x1
+#define EFI_ACPI_6_5_RINTC_FLAGS_ONLINE_CAPABLE   0x2
+
+///
+/// RISC-V Platform Level Interrupt Controller
+///   https://drive.google.com/file/d/1oMGPyOD58JaPgMl1pKasT-VKsIKia7zR/view
+///
+typedef struct {
+  UINT8     Type;
+  UINT8     Length;
+  UINT8     Version;
+  UINT8     PLICId;
+  UINT64    HardwareId;
+  UINT16    ExternalINTCSources;
+  UINT16    MaxPriority;
+  UINT32    Flags;
+  UINT32    PLICSize;
+  UINT64    PLICAddress;
+  UINT32    GSIV;
+} EFI_ACPI_6_5_PLIC_STRUCTURE;
 
 ///
 /// Smart Battery Description Table (SBST)

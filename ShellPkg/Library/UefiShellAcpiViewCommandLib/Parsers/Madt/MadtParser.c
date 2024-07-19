@@ -326,6 +326,39 @@ STATIC CONST ACPI_PARSER  LocalX2ApicNmi[] = {
 };
 
 /**
+  An ACPI_PARSER array describing the RISC-V Interrupt Controller Structure.
+**/
+STATIC CONST ACPI_PARSER  RiscVIntc[] = {
+  { L"Type",               1, 0, L"0x%x",     NULL,       NULL, NULL, NULL },
+  { L"Length",             1, 1, L"%d",       NULL,       NULL, NULL, NULL },
+  { L"Version",            1, 2, L"%d",       NULL,       NULL, NULL, NULL },
+  { L"Reserved",           1, 3, L"0x%x",     NULL,       NULL, NULL, NULL },
+  { L"Flags",              4, 4, L"0x%x",     NULL,       NULL, NULL, NULL },
+  { L"Hard ID",            8, 8, L"0x%lx",    NULL,       NULL, NULL, NULL },
+  { L"ACPI Processor UID", 4,16, L"0x%x",     NULL,       NULL, NULL, NULL },
+  { L"External INTC ID",   4,20, L"0x%x",     NULL,       NULL, NULL, NULL },
+  { L"IMSIC Base",         8,24, L"0x%lx",    NULL,       NULL, NULL, NULL },
+  { L"IMSIC Size",         4,32, L"0x%x",     NULL,       NULL, NULL, NULL }
+};
+
+/**
+  An ACPI_PARSER array describing the RISC-V Platform Level Interrupt Controller Structure.
+**/
+STATIC CONST ACPI_PARSER  RiscVPlatformLevelIntc[] = {
+  { L"Type",               1, 0, L"0x%x",     NULL,       NULL, NULL, NULL },
+  { L"Length",             1, 1, L"%d",       NULL,       NULL, NULL, NULL },
+  { L"Version",            1, 2, L"%d",       NULL,       NULL, NULL, NULL },
+  { L"PLIC ID",            1, 3, L"0x%x",     NULL,       NULL, NULL, NULL },
+  { L"Hardware ID",        8, 4, L"0x%lx",    NULL,       NULL, NULL, NULL },
+  { L"Total Ext Sources",  2,12, L"0x%x",     NULL,       NULL, NULL, NULL },
+  { L"Max Priority",       2,14, L"0x%x",     NULL,       NULL, NULL, NULL },
+  { L"Flags",              4,16, L"0x%x",     NULL,       NULL, NULL, NULL },
+  { L"PLIC Size",          4,20, L"0x%x",     NULL,       NULL, NULL, NULL },
+  { L"PLIC Base",          8,24, L"0x%lx",    NULL,       NULL, NULL, NULL },
+  { L"Global IV BAR",      4,32, L"0x%x",     NULL,       NULL, NULL, NULL }
+};
+
+/**
   An ACPI_PARSER array describing the ACPI MADT Table.
 **/
 STATIC CONST ACPI_PARSER  MadtParser[] = {
@@ -568,6 +601,32 @@ ParseAcpiMadt (
           InterruptContollerPtr,
           *MadtInterruptControllerLength,
           PARSER_PARAMS (LocalX2ApicNmi)
+          );
+        break;
+      }
+
+      case EFI_ACPI_6_5_RINTC:
+      {
+        ParseAcpi (
+          TRUE,
+          2,
+          "RISC-V INTC",
+          InterruptContollerPtr,
+          *MadtInterruptControllerLength,
+          PARSER_PARAMS (RiscVIntc)
+          );
+        break;
+      }
+
+      case EFI_ACPI_6_5_PLIC:
+      {
+        ParseAcpi (
+          TRUE,
+          2,
+          "RISC-V Platform Level INTC",
+          InterruptContollerPtr,
+          *MadtInterruptControllerLength,
+          PARSER_PARAMS (RiscVPlatformLevelIntc)
           );
         break;
       }
