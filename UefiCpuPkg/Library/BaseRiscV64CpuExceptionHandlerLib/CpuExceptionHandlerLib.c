@@ -248,9 +248,9 @@ RegisterCpuInterruptHandler (
       return EFI_UNSUPPORTED;
     }
 
-    if (mExceptionHandlers[ExceptionType] != NULL) {
+    if (mExceptionHandlers[ExceptionType] != NULL && InterruptHandler != NULL) {
       return EFI_ALREADY_STARTED;
-    } else if (InterruptHandler == NULL) {
+    } else if (mExceptionHandlers[ExceptionType] == NULL && InterruptHandler == NULL) {
       return EFI_INVALID_PARAMETER;
     }
 
