@@ -2983,6 +2983,18 @@ typedef struct {
 #define EFI_ACPI_6_5_PHAT_FIRMWARE_HEALTH_DATA_RECORD_UNKNOWN          0x02
 #define EFI_ACPI_6_5_PHAT_FIRMWARE_HEALTH_DATA_RECORD_ADVISORY         0x03
 
+///
+/// RISC-V Hart Capabilities Table (RHCT) Table
+///   https://drive.google.com/file/d/1oMGPyOD58JaPgMl1pKasT-VKsIKia7zR/view
+///
+typedef struct {
+  EFI_ACPI_DESCRIPTION_HEADER   Header;
+  UINT32    Reserved;
+  UINT64    TimeBaseFrequency;
+  UINT32    RHCTNodeNumber;
+  UINT32    RHCTNodeOffset;
+} EFI_ACPI_6_5_RISC_V_HART_CAPABILITIES_TABLE_STRUCTURE;
+
 //
 // Known table signatures
 //
@@ -3306,6 +3318,12 @@ typedef struct {
 /// "XENV" Xen Project Table
 ///
 #define EFI_ACPI_6_5_XEN_PROJECT_TABLE_SIGNATURE  SIGNATURE_32('X', 'E', 'N', 'V')
+
+///
+/// "RHCT" RISC-V Hart Capabilities Table
+///
+#define EFI_ACPI_6_5_RISC_V_HART_CAPABILITIES_TABLE_SIGNATURE  SIGNATURE_32('R', 'H', 'C', 'T')
+
 
 #pragma pack()
 
