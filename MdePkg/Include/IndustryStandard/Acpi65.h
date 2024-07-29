@@ -739,7 +739,7 @@ typedef struct {
   UINT8     Reserved;
   UINT32    Flags;
   UINT64    HartId;
-  UINT32    ProcessorUid;
+  UINT32    AcpiProcessorUid;
   UINT32    ExternalINTCId;
   UINT64    IMSICBase;
   UINT32    IMSICSize;
@@ -1218,7 +1218,7 @@ typedef struct {
   UINT16    Flags;
   UINT16    Reserved1;
   UINT32    NumberOfMemoryDevices;
-  // UINT8                                   TypeSpecificData[];
+  // UINT8                                   TypeSpecificData≤≤≤≤≤;
   // EFI_ACPI_6_5_PMTT_COMMON_MEMORY_DEVICE  MemoryDeviceStructure[NumberOfMemoryDevices];
 } EFI_ACPI_6_5_PMTT_COMMON_MEMORY_DEVICE;
 
@@ -2986,14 +2986,70 @@ typedef struct {
 ///
 /// RISC-V Hart Capabilities Table (RHCT) Table
 ///   https://drive.google.com/file/d/1oMGPyOD58JaPgMl1pKasT-VKsIKia7zR/view
+///   https://drive.google.com/file/d/1sKbOa8m1UZw1JkquZYe3F1zQBN1xXsaf/view
 ///
 typedef struct {
   EFI_ACPI_DESCRIPTION_HEADER   Header;
-  UINT32    Reserved;
+  UINT32    Flags;
   UINT64    TimeBaseFrequency;
   UINT32    RHCTNodeNumber;
   UINT32    RHCTNodeOffset;
+  //EFI_ACPI_6_5_RISC_V_HART_CAPABILITIES_TABLE_NODE_STRUCTURE  RHCTNode[];
 } EFI_ACPI_6_5_RISC_V_HART_CAPABILITIES_TABLE_STRUCTURE;
+
+#define EFI_ACPI_6_5_RHCT_FLAGS_TIMER_CANNOT_WAKE_UP_CPU    0x0
+
+#define EFI_ACPI_6_5_RHCT_NODE_TYPE_ISA_STRING_NODE         0
+#define EFI_ACPI_6_5_RHCT_NODE_TYPE_CMO_EXTENSION_NODE      1
+#define EFI_ACPI_6_5_RHCT_NODE_TYPE_MMU_NODE                2
+#define EFI_ACPI_6_5_RHCT_NODE_TYPE_HART_INFO_NODE          65535
+
+///
+/// RHCT ISA String Node Structure
+///
+typedef struct {
+  UINT16    Type;
+  UINT16    Length;
+  UINT16    Revision;
+  UINT16    ISALength;
+  UINT8     ISAString[];
+} EFI_ACPI_6_5_RHCT_ISA_STRING_NODE_STRUCTURE;
+
+///
+/// RHCT CMO Extension Node Structure
+///
+typedef struct {
+  UINT16    Type;
+  UINT16    Length;
+  UINT16    Revision;
+  UINT8     Reserved;
+  UINT8     CBOMBlockSize;
+  UINT8     CBOPBlockSize;
+  UINT8     CBOZBlockSize;
+} EFI_ACPI_6_5_RHCT_CMO_EXTENSION_NODE_STRUCTURE;
+
+///
+/// RHCT MMU Node Structure
+///
+typedef struct {
+  UINT16    Type;
+  UINT16    Length;
+  UINT16    Revision;
+  UINT8     Reserved;
+  UINT8     MMUType;
+} EFI_ACPI_6_5_RHCT_MMU_NODE_STRUCTURE;
+
+///
+/// RHCT HART Info Node Structure
+///
+typedef struct {
+  UINT16    Type;
+  UINT16    Length;
+  UINT16    Revision;
+  UINT16    OffsetNumber;
+  UINT32    AcpiProcessorUid;
+  // UINT32   Offsets[];
+} EFI_ACPI_6_5_RHCT_HART_INFO_NODE_STRUCTURE;
 
 //
 // Known table signatures
